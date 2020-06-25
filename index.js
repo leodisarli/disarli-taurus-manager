@@ -4,12 +4,13 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const Arena = require('./src/server/app');
 const routes = require('./src/server/views/routes');
+const taurusOptions = require('./src/server/config/option');
 
 function run(config, listenOpts = {}) {
   const { app, Queues } = Arena();
 
   if (config) Queues.setConfig(config);
-  Queues.useCdn = typeof listenOpts.useCdn !== 'undefined' ? listenOpts.useCdn : true;
+  Queues.useCdn = typeof listenOpts.useCdn !== 'undefined' ? listenOpts.useCdn : Boolean(taurusOptions.cdn);
 
   app.locals.appBasePath = listenOpts.basePath || app.locals.appBasePath;
 
@@ -23,7 +24,7 @@ function run(config, listenOpts = {}) {
   app.use(app.locals.appBasePath, express.static(path.join(__dirname, 'public')));
   app.use(app.locals.appBasePath, routes);
 
-  const port = listenOpts.port || 8001;
+  const port = listenOpts.port || Number(taurusOptions.port);
   const host = listenOpts.host || '0.0.0.0'; // Default: listen to all network interfaces.
   if (!listenOpts.disableListen) {
     app.listen(port, host, () => console.log(`Taurus manager is running on port ${port} at host ${host}`));

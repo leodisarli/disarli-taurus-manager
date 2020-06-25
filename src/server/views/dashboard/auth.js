@@ -1,4 +1,4 @@
-const user = require('../../config/user.js');
+const user = require('../../config/user');
 
 function handler(req, res) {
   var username = req.body.username;
