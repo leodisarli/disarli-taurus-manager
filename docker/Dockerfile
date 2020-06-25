@@ -4,7 +4,7 @@ RUN apk --no-cache upgrade && apk add --no-cache tini
 
 WORKDIR /opt/taurus
 
-EXPOSE 4567
+EXPOSE 8001
 
 USER node
 

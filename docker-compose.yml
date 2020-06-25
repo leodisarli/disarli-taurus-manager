@@ -5,9 +5,9 @@ services:
     container_name: taurus-manager
     build: docker
     ports:
-      - "4567:4567"
+      - "8001:8001"
     expose:
-      - 4567
+      - 8001
     volumes:
       - ./:/opt/taurus
     restart: always
