@@ -1,0 +1,13 @@
+version: "3"
+services:
+  taurus-manager:
+    hostname: taurus-manager
+    container_name: taurus-manager
+    build: docker
+    ports:
+      - "4567:4567"
+    expose:
+      - 4567
+    volumes:
+      - ./:/opt/taurus
+    restart: always
