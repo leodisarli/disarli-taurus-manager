@@ -1,4 +1,4 @@
-# Taurus
+# Taurus Manager
 
 An intuitive Web GUI for [Taurus](https://github.com/leodisarli/disarli-taurus). Built on Express so you can run standalone, or mounted in another app as middleware.
 
