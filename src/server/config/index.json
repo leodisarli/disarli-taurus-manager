@@ -1,0 +1,18 @@
+{
+  "__example_queues": [
+    {
+      "name": "io-data-event",
+      "port": 6379,
+      "host": "127.0.0.1",
+      "hostId": "taurus-redis"
+    }
+  ],
+  "queues": [
+    {
+      "name": "io-data-event",
+      "port": 6379,
+      "host": "127.0.0.1",
+      "hostId": "taurus-redis"
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "name": "taurus-manager",
+  "description": "Manage Taurus Queue",
+  "main": "index.js",
+  "author": "Leo Di Sarli <leosarli@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "bee-queue": "^1.0.0",
+    "body-parser": "^1.19.0",
+    "bull": "^3.12.1",
+    "dotenv": "^8.2.0",
+    "express": "^4.15.2",
+    "express-handlebars": "^3.0.0",
+    "express-session": "^1.17.1",
+    "handlebars": "^4.3.0",
+    "handlebars-helpers": "^0.10.0",
+    "jsoneditor": "^5.9.6",
+    "lodash": "^4.17.15",
+    "nodemon": "^1.18.7",
+    "tablesort": "^5.0.1"
+  },
+  "scripts": {
+    "start": "nodemon index.js --ignore 'public/vendor/*'",
+    "inspect": "nodemon --inspect --trace-warnings --ignore 'public/vendor/*' index.js"
+  },
+  "engines": {
+    "node": ">=7.6.0"
+  },
+  "repository": "https://github.com/leodisarli/disarli-taurus-manager.git",
+  "version": "1.0.0"
+}
