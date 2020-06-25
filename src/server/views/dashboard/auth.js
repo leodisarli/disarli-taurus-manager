@@ -1,8 +1,4 @@
-require('dotenv').config();
-const user = {
-  user: process.env.TAURUS_MANAGER_USER,
-  pass: process.env.TAURUS_MANAGER_PASS,
-}
+const user = require('../../config/user.js');
 
 function handler(req, res) {
   var username = req.body.username;

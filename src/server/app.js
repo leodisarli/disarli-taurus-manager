@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
@@ -16,9 +17,9 @@ module.exports = function() {
 
   const app = express();
 
-  const defaultConfig = require(path.join(__dirname, 'config', 'index.json'));
-
   const Queues = require('./queue');
+
+  const defaultConfig = require(path.join(__dirname, 'config', 'queue.js'));
 
   const queues = new Queues(defaultConfig);
   require('./views/helpers/handlebars')(handlebars, { queues });
