@@ -8,6 +8,8 @@
       <th>Name</th>
       <th>Waiting</th>
       <th>Active</th>
+      <th>Failed</th>
+      <th>Delayed</th>
     </thead>
     <tbody>
       {{#each queues}}
@@ -16,6 +18,8 @@
           <td><a href="{{ ../basePath }}/{{ encodeURI this.hostId }}/{{ encodeURI this.name }}">{{ this.name }}</a></td>
           <td>{{ this.jobCounts.waiting }}</td>
           <td>{{ this.jobCounts.active }}</td>
+          <td>{{ this.jobCounts.failed }}</td>
+          <td>{{ this.jobCounts.delayed }}</td>
         </tr>
       {{/each}}
     </tbody>
