@@ -2,7 +2,7 @@
   "name": "taurus-manager",
   "description": "Manage Taurus Queue",
   "main": "index.js",
-  "author": "Leo Di Sarli <leosarli@gmail.com>",
+  "author": "Developer <dev@kiwfy.com>",
   "license": "MIT",
   "dependencies": {
     "bee-queue": "^1.0.0",
