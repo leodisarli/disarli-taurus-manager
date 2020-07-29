@@ -26,6 +26,6 @@
   "engines": {
     "node": ">=7.6.0"
   },
-  "repository": "https://github.com/leodisarli/disarli-taurus-manager.git",
+  "repository": "https://github.com/kiwfy/taurus-manager.git",
   "version": "1.0.0"
 }
