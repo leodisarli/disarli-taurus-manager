@@ -246,7 +246,7 @@ $(document).ready(() => {
       contentType: 'application/json'
     }).done(() => {
       alert('Job successfully added!');
-      localStorage.removeItem('arena:savedJobData');
+      $('.json-editor').toggleClass('hide');
     }).fail((jqXHR) => {
       window.alert('Failed to save job, check console for error.');
       console.error(jqXHR.responseText);
