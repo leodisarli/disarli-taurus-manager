@@ -8,6 +8,13 @@ async function handler(req, res) {
   const {queueName, queueHost} = req.params;
   const {Queues} = req.app.locals;
   const queue = await Queues.get(queueName, queueHost);
+
+  const metaPaused = await queue.client.get(
+    `bull:${queueName}:meta-paused`
+  );
+
+  const isPaused = metaPaused == '1';
+  
   const basePath = req.baseUrl;
   if (!queue) return res.status(404).render('dashboard/templates/queueNotFound', {basePath, queueName, queueHost});
 
@@ -15,21 +22,21 @@ async function handler(req, res) {
   jobCounts = await queue.getJobCounts();
   const stats = await QueueHelpers.getStats(queue);
 
-  const paused = jobCounts.paused;
-  
+  jobCounts.waiting += jobCounts.paused;
+
   jobCounts = Object.keys(jobCounts)
-    .filter(key => key != 'paused')
-    .reduce((obj, key) => {
-      obj[key] = jobCounts[key]
-      return obj;
-    }, {});
+  .filter(key => key != 'paused')
+  .reduce((obj, key) => {
+    obj[key] = jobCounts[key]
+    return obj;
+  }, {});
 
   return res.render('dashboard/templates/queueDetails', {
     basePath,
     queueName,
     queueHost,
     jobCounts,
-    paused,
+    isPaused,
     stats
   });
 }
