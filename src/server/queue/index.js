@@ -1,6 +1,5 @@
 const _ = require('lodash');
 const Bull = require('bull');
-const Bee = require('bee-queue');
 const Ulid = require('ulid');
 
 class Queues {
@@ -47,28 +46,14 @@ class Queues {
     if (db) redisHost.db = db;
     if (tls) redisHost.tls = tls;
 
-    const isBee = type === 'bee';
-
     const options = {
       redis: redis || url || redisHost
     };
     if (prefix) options.prefix = prefix;
 
     let queue;
-    if (isBee) {
-      _.extend(options, {
-        isWorker: false,
-        getEvents: false,
-        sendEvents: false,
-        storeJobs: false
-      });
-
-      queue = new Bee(name, options);
-      queue.IS_BEE = true;
-    } else {
-      if (queueConfig.createClient) options.createClient = queueConfig.createClient;
-      queue = new Bull(name, options);
-    }
+    if (queueConfig.createClient) options.createClient = queueConfig.createClient;
+    queue = new Bull(name, options);
 
     this._queues[queueHost] = this._queues[queueHost] || {};
     this._queues[queueHost][queueName] = queue;
@@ -79,29 +64,22 @@ class Queues {
   /**
    * Creates and adds a job with the given `data` to the given `queue`.
    *
-   * @param {Object} queue A bee or bull queue class
+   * @param {Object} queue A bull queue class
    * @param {Object} data The data to be used within the job
    */
   async set(queue, data) {
-    if (queue.IS_BEE) {
-      return queue.createJob(data).save();
-    } else {
-      const args = [
-        data,
-        {
-          jobId: Ulid.ulid(),
-          removeOnComplete: false,
-          removeOnFail: false
-        }
-      ];
-
-      if (data.name) {
-        args.unshift(data.name);
-        delete data.name;
+    const args = [
+      data,
+      {
+        jobId: Ulid.ulid(),
+        removeOnComplete: false,
+        removeOnFail: false
       }
+    ];
 
-      return queue.add.apply(queue, args);
-    }
+    args.unshift('process');
+
+    return queue.add.apply(queue, args);
   }
 }
 

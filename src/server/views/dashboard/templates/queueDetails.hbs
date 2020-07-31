@@ -9,11 +9,7 @@
       </div>
       <div class="panel-body">
         <div class="json-editor form-group hide overflow-hidden">
-          <textarea
-            rows="20"
-            class="json-text form-control"
-            placeholder='{ "name": "process" }'
-          ></textarea>
+          <textarea rows="20" class="json-text form-control"></textarea>
           <br />
           <div class="json-actions pull-right">
             <button class="js-format-json btn btn-default btn-sm">Format</button>
@@ -29,6 +25,10 @@
             </a>
           </li>
           {{/each}}
+          <li class="list-group-item">
+            <span class="badge">{{ paused }}</span>
+            <span class="text-capitalize">Paused</span>
+          </li>
         </ul>
       </div>
     </div>

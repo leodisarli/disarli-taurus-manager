@@ -7,11 +7,9 @@
   Remove
 </button>
 
-{{#if showRetryButton}}
-  <button class="btn btn-success js-retry-job" data-queue-host="{{ queueHost }}" data-queue-name="{{ queueName }}" data-job-id="{{ this.id }}">
-    {{ retryButtonText }}
-  </button>
-{{/if}}
+<button class="btn btn-success js-retry-job" data-queue-host="{{ queueHost }}" data-queue-name="{{ queueName }}" data-job-id="{{ this.id }}">
+  {{ retryButtonText }}
+</button>
 
 
 <div class="row">
@@ -47,7 +45,6 @@
   </div>
 </div>
 
-{{#unless this.queue.IS_BEE}}
 <h5>Progress</h5>
 <div class="progress">
   <div class="progress-bar
@@ -62,7 +59,6 @@
     {{ this._progress }}%
   </div>
 </div>
-{{/unless}}
 
 {{#if this.returnvalue}}
 <h5>Return Value</h5>
