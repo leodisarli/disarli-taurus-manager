@@ -1,4 +1,9 @@
-<h2>Queue <code>{{ queueHost }}/{{ queueName }}</code></h2>
+<h2>
+  Queue <code>{{ queueHost }}/{{ queueName }}</code>
+  {{#if isPaused}}
+    <span class="badge">Paused</span>
+  {{/if}}
+</h2>
 
 <div class="row">
   <div class="col-sm-6">
@@ -25,10 +30,6 @@
             </a>
           </li>
           {{/each}}
-          <li class="list-group-item">
-            <span class="badge">{{ paused }}</span>
-            <span class="text-capitalize">Paused</span>
-          </li>
         </ul>
       </div>
     </div>
