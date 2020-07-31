@@ -20,11 +20,12 @@
       </th>
       <th>Host</th>
       <th>Name</th>
+      <th data-sort-method="none"></th>
+      <th>Paused</th>
       <th>Waiting</th>
       <th>Active</th>
       <th>Failed</th>
       <th>Delayed</th>
-      <th>Paused</th>
     </thead>
     <tbody>
       {{#each queues}}
@@ -32,11 +33,16 @@
           <td><input type="checkbox" name="queueChecked" class="js-bulk-queue"></td>
           <td name="queueHost" data-queue-host="{{ this.hostId }}">{{ this.hostId }}</td>
           <td><a name="queueName" data-queue-name="{{ this.name }}" href="{{ ../basePath }}/{{ encodeURI this.hostId }}/{{ encodeURI this.name }}">{{ this.name }}</a></td>
+          <td>
+            {{#if this.isPaused}}
+              <span class="badge">Paused</span>
+            {{/if}}
+          </td>
+          <td>{{ this.jobCounts.paused }}</td>
           <td>{{ this.jobCounts.waiting }}</td>
           <td>{{ this.jobCounts.active }}</td>
           <td>{{ this.jobCounts.failed }}</td>
           <td>{{ this.jobCounts.delayed }}</td>
-          <td>{{ this.jobCounts.paused }}</td>
         </tr>
       {{/each}}
     </tbody>
