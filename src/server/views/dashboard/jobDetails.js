@@ -27,6 +27,9 @@ async function handler(req, res) {
   job.showRetryButton = !queue.IS_BEE || jobState === 'failed';
   job.retryButtonText = jobState === 'failed' ? 'Retry' : 'Trigger';
 
+  let logs = await queue.getJobLogs(job.id);
+  job.logs = (logs.logs || "No Logs");
+
   return res.render('dashboard/templates/jobDetails', {
     basePath,
     queueName,
