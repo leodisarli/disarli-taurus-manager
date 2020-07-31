@@ -1,6 +1,7 @@
 const _ = require('lodash');
 const Bull = require('bull');
 const Bee = require('bee-queue');
+const Ulid = require('ulid');
 
 class Queues {
   constructor(config) {
@@ -88,12 +89,17 @@ class Queues {
       const args = [
         data,
         {
+          jobId: Ulid.ulid(),
           removeOnComplete: false,
           removeOnFail: false
         }
       ];
 
-      if (data.name) args.unshift(data.name)
+      if (data.name) {
+        args.unshift(data.name);
+        delete data.name;
+      }
+
       return queue.add.apply(queue, args);
     }
   }

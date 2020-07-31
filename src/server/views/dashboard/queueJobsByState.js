@@ -106,7 +106,7 @@ async function _html(req, res) {
   for (const job of jobs) {
     const jobState = queue.IS_BEE ? job.status : await job.getState();
     job.showRetryButton = !queue.IS_BEE || jobState == 'failed';
-    job.retryButtonText = jobState == 'failed' ? 'Retry' : 'Trigger';
+    job.retryButtonText = jobState == 'failed' ? 'Retry' : 'Clone';
   }
 
   let pages = _.range(page - 6, page + 7)

@@ -5,6 +5,32 @@ $(document).ready(() => {
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
 
+  function isValidQueueAction(data) {
+    const { action, queues } = data;
+
+    if (action === 'retry' && queues.length > 1) {
+      window.alert('Please, select only 1 queue.');
+      return false;
+    }
+
+    if (action === 'retry' && queues.length === 0) {
+      window.alert('Please, select 1 queue.');
+      return false;
+    }
+
+    if (action === 'resume' && queues.length === 0) {
+      window.alert('Please, select 1 queue.');
+      return false;
+    }
+
+    if (action === 'pause' && queues.length === 0) {
+      window.alert('Please, select 1 queue.');
+      return false;
+    }
+
+    return true;
+  }
+
   // Set up individual "retry job" handler
   $('.js-retry-job').on('click', function(e) {
     e.preventDefault();
@@ -99,7 +125,7 @@ $(document).ready(() => {
     const $queueActionContainer = $('.js-queue-action-container');
 
     let data = {
-      action: 'retry',
+      action: $(e.target).data('action'),
       queues: [],
     };
 
@@ -116,14 +142,15 @@ $(document).ready(() => {
       }
     });
 
-    if (data.queues.length === 0) {
-      window.alert('Please, select one or more queues.');
-      return
+    if (!isValidQueueAction(data)) {
+      return;
     }
 
-    const r = window.confirm(`${capitalize(data.action)} ${data.queues.length} ${data.queues.length > 1 ? 'queues' : 'queue'}?`);
+    const confirmation = window.confirm(
+      `Warning! You are about to ${capitalize(data.action)} ${data.queues.length} queue(s). Do you confirm this action?`
+    );
 
-    if (r) {
+    if (confirmation) {
       $.ajax({
         method: 'POST',
         url: `${basePath}/api/queue/${data.action}`,
@@ -184,15 +211,34 @@ $(document).ready(() => {
   });
 
   $('.js-toggle-add-job-editor').on('click', function() {
-    $('.jsoneditorx').toggleClass('hide');
-    const data = localStorage.getItem('arena:savedJobData');
-    window.jsonEditor.set(data ? JSON.parse(data) : {id: ''});
+    $('.json-editor').toggleClass('hide');
   });
 
+  $('.json-text').keyup(function() {
+    try {
+      JSON.parse($(this).val());
+      $('.js-add-job').prop('disabled', false);
+      $('.js-add-job').html('Create');
+      $('.js-format-json').prop('disabled', false);
+    } catch (e) {
+      $('.js-add-job').prop('disabled', true);
+      $('.js-add-job').html('Invalid JSON');
+      $('.js-format-json').prop('disabled', true);
+    }
+  });
+
+  $('.js-format-json').on('click', function() {
+    const json = $('.json-text').val();
+    const parsed = JSON.parse(json);
+    const string = JSON.stringify(parsed, undefined, 4);
+
+    $('.json-text').val(string);
+  })
+
   $('.js-add-job').on('click', function() {
-    const data = window.jsonEditor.get();
-    localStorage.setItem('arena:savedJobData', JSON.stringify(data));
+    const data = JSON.parse($('.json-text').val());
     const { queueHost, queueName } = window.arenaInitialPayload;
+
     $.ajax({
       url: `${basePath}/api/queue/${queueHost}/${queueName}/job`,
       type: 'POST',
@@ -200,7 +246,7 @@ $(document).ready(() => {
       contentType: 'application/json'
     }).done(() => {
       alert('Job successfully added!');
-      localStorage.removeItem('arena:savedJobData');
+      $('.json-editor').toggleClass('hide');
     }).fail((jqXHR) => {
       window.alert('Failed to save job, check console for error.');
       console.error(jqXHR.responseText);
