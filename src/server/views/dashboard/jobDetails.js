@@ -25,7 +25,7 @@ async function handler(req, res) {
 
   const jobState = queue.IS_BEE ? job.status : await job.getState();
   job.showRetryButton = !queue.IS_BEE || jobState === 'failed';
-  job.retryButtonText = jobState === 'failed' ? 'Retry' : 'Trigger';
+  job.retryButtonText = jobState === 'failed' ? 'Retry' : 'Clone';
 
   let logs = await queue.getJobLogs(job.id);
   job.logs = (logs.logs || "No Logs");

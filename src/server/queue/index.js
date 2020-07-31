@@ -95,7 +95,11 @@ class Queues {
         }
       ];
 
-      if (data.name) args.unshift(data.name)
+      if (data.name) {
+        args.unshift(data.name);
+        delete data.name;
+      }
+
       return queue.add.apply(queue, args);
     }
   }
