@@ -144,3 +144,7 @@ pre {
   overflow: hidden;
 }
 
+.json-editor {
+  padding: 3px;
+}
+
