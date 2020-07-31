@@ -5,6 +5,32 @@ $(document).ready(() => {
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
 
+  function isValidQueueAction(data) {
+    const { action, queues } = data;
+
+    if (action === 'retry' && queues.length > 1) {
+      window.alert('Please, select only 1 queue.');
+      return false;
+    }
+
+    if (action === 'retry' && queues.length === 0) {
+      window.alert('Please, select 1 queue.');
+      return false;
+    }
+
+    if (action === 'resume' && queues.length === 0) {
+      window.alert('Please, select 1 queue.');
+      return false;
+    }
+
+    if (action === 'pause' && queues.length === 0) {
+      window.alert('Please, select 1 queue.');
+      return false;
+    }
+
+    return true;
+  }
+
   // Set up individual "retry job" handler
   $('.js-retry-job').on('click', function(e) {
     e.preventDefault();
@@ -99,7 +125,7 @@ $(document).ready(() => {
     const $queueActionContainer = $('.js-queue-action-container');
 
     let data = {
-      action: 'retry',
+      action: $(e.target).data('action'),
       queues: [],
     };
 
@@ -116,14 +142,15 @@ $(document).ready(() => {
       }
     });
 
-    if (data.queues.length === 0) {
-      window.alert('Please, select one or more queues.');
-      return
+    if (!isValidQueueAction(data)) {
+      return;
     }
 
-    const r = window.confirm(`${capitalize(data.action)} ${data.queues.length} ${data.queues.length > 1 ? 'queues' : 'queue'}?`);
+    const confirmation = window.confirm(
+      `Warning! You are about to ${capitalize(data.action)} ${data.queues.length} queue(s). Do you confirm this action?`
+    );
 
-    if (r) {
+    if (confirmation) {
       $.ajax({
         method: 'POST',
         url: `${basePath}/api/queue/${data.action}`,

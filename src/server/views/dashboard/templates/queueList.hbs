@@ -7,6 +7,8 @@
   </button>
   <ul class="dropdown-menu">
     <li><a class="dropdown-item js-queue-action" href="#" data-action="retry">Retry all failed jobs</a></li>
+    <li><a class="dropdown-item js-queue-action" href="#" data-action="pause">Pause queue(s)</a></li>
+    <li><a class="dropdown-item js-queue-action" href="#" data-action="resume">Resume queue(s)</a></li>
   </ul>
 </div>
 
@@ -22,6 +24,7 @@
       <th>Active</th>
       <th>Failed</th>
       <th>Delayed</th>
+      <th>Paused</th>
     </thead>
     <tbody>
       {{#each queues}}
@@ -33,6 +36,7 @@
           <td>{{ this.jobCounts.active }}</td>
           <td>{{ this.jobCounts.failed }}</td>
           <td>{{ this.jobCounts.delayed }}</td>
+          <td>{{ this.jobCounts.paused }}</td>
         </tr>
       {{/each}}
     </tbody>
