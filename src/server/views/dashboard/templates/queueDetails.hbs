@@ -8,10 +8,17 @@
         <h4 class="panel-title">Job Types</h4>
       </div>
       <div class="panel-body">
-        <div class="jsoneditorx form-group hide overflow-hidden">
-          <div class="jsoneditorx hide" id="jsoneditor" style="height:200px;"></div>
+        <div class="json-editor form-group hide overflow-hidden">
+          <textarea
+            rows="20"
+            class="json-text form-control"
+            placeholder='{ "name": "process" }'
+          ></textarea>
           <br />
-          <div class="js-add-job  btn btn-primary btn-sm pull-right">Create</div>
+          <div class="json-actions pull-right">
+            <button class="js-format-json btn btn-default btn-sm">Format</button>
+            <button class="js-add-job btn btn-primary btn-sm">Create</button>
+          </div>
         </div>
         <ul class="list-group">
           {{#each jobCounts}}
@@ -52,7 +59,6 @@
 {{/contentFor}}
 
 {{#contentFor 'script'}}
-  window.jsonEditor = new JSONEditor(document.getElementById('jsoneditor'), {});
   window.arenaInitialPayload = {
     queueHost: "{{ queueHost }}",
     queueName: "{{ queueName }}"

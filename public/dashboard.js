@@ -211,15 +211,34 @@ $(document).ready(() => {
   });
 
   $('.js-toggle-add-job-editor').on('click', function() {
-    $('.jsoneditorx').toggleClass('hide');
-    const data = localStorage.getItem('arena:savedJobData');
-    window.jsonEditor.set(data ? JSON.parse(data) : {id: ''});
+    $('.json-editor').toggleClass('hide');
   });
 
+  $('.json-text').keyup(function() {
+    try {
+      JSON.parse($(this).val());
+      $('.js-add-job').prop('disabled', false);
+      $('.js-add-job').html('Create');
+      $('.js-format-json').prop('disabled', false);
+    } catch (e) {
+      $('.js-add-job').prop('disabled', true);
+      $('.js-add-job').html('Invalid JSON');
+      $('.js-format-json').prop('disabled', true);
+    }
+  });
+
+  $('.js-format-json').on('click', function() {
+    const json = $('.json-text').val();
+    const parsed = JSON.parse(json);
+    const string = JSON.stringify(parsed, undefined, 4);
+
+    $('.json-text').val(string);
+  })
+
   $('.js-add-job').on('click', function() {
-    const data = window.jsonEditor.get();
-    localStorage.setItem('arena:savedJobData', JSON.stringify(data));
+    const data = JSON.parse($('.json-text').val());
     const { queueHost, queueName } = window.arenaInitialPayload;
+
     $.ajax({
       url: `${basePath}/api/queue/${queueHost}/${queueName}/job`,
       type: 'POST',
