@@ -4,43 +4,39 @@
 
 <div class="row pagination-container">
   <div class="col-sm-6">
-    {{#unless disablePagination}}
-      <nav aria-label="Job navigation">
-        <ul class="pagination">
+    <nav aria-label="Job navigation">
+      <ul class="pagination">
+        <li
+          {{#eq currentPage 1}}
+            class="disabled">
+              <span>&laquo;</span>
+          {{else}}
+            ><a href="{{ basePath }}/{{ encodeURI queueHost }}/{{ encodeURI queueName }}/{{ state }}?page={{ subtract currentPage 1 }}&amp;pageSize={{ pageSize }}" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          {{/eq}}
+        </li>
+        {{#each pages}}
           <li
-            {{#eq currentPage 1}}
-              class="disabled">
-                <span>&laquo;</span>
-            {{else}}
-              ><a href="{{ basePath }}/{{ encodeURI queueHost }}/{{ encodeURI queueName }}/{{ state }}?page={{ subtract currentPage 1 }}&amp;pageSize={{ pageSize }}" aria-label="Previous">
-                <span aria-hidden="true">&laquo;</span>
-              </a>
-            {{/eq}}
-          </li>
-          {{#each pages}}
-            <li
-              {{#eq this ../currentPage}}
-                class="active"
-              {{/eq}}>
+            {{#eq this ../currentPage}}
+              class="active"
+            {{/eq}}>
 
-              <a href="{{ ../basePath }}/{{ encodeURI ../queueHost }}/{{ encodeURI ../queueName }}/{{ ../state }}?page={{ this }}&amp;pageSize={{ ../pageSize }}">{{ this }}</a>
-            </li>
-          {{/each}}
-          <li
-            {{#eq currentPage lastPage}}
-              class="disabled">
-                <span>&raquo;</span>
-            {{else}}
-              ><a href="{{ basePath }}/{{ encodeURI queueHost }}/{{ encodeURI queueName }}/{{ state }}?page={{ add currentPage 1 }}&amp;pageSize={{ pageSize }}" aria-label="Previous">
-                <span aria-hidden="true">&raquo;</span>
-              </a>
-            {{/eq}}
+            <a href="{{ ../basePath }}/{{ encodeURI ../queueHost }}/{{ encodeURI ../queueName }}/{{ ../state }}?page={{ this }}&amp;pageSize={{ ../pageSize }}">{{ this }}</a>
           </li>
-        </ul>
-      </nav>
-    {{else}}
-      Bee-queue does not support pagination for {{ state }} queues &mdash; currently displaying up to <b>{{ pageSize }} jobs</b>. To change count, use "Size" dropdown.
-    {{/unless}}
+        {{/each}}
+        <li
+          {{#eq currentPage lastPage}}
+            class="disabled">
+              <span>&raquo;</span>
+          {{else}}
+            ><a href="{{ basePath }}/{{ encodeURI queueHost }}/{{ encodeURI queueName }}/{{ state }}?page={{ add currentPage 1 }}&amp;pageSize={{ pageSize }}" aria-label="Previous">
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+          {{/eq}}
+        </li>
+      </ul>
+    </nav>
   </div>
   <div class="col-sm-6 text-right">
     <a href="{{ basePath }}/{{ encodeURI queueHost }}/{{ encodeURI queueName }}/{{ state }}.json" type="button" class="btn btn-primary">
@@ -56,15 +52,9 @@
     {{/eq}}
 
       <div class="btn-group">
-        {{#if disablePagination}}
-          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Size <span class="caret"></span>
-          </button>
-        {{else}}
-          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Page Size <span class="caret"></span>
-          </button>
-        {{/if}}
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Page Size <span class="caret"></span>
+        </button>
         <ul class="dropdown-menu">
           <li><a href="{{ basePath }}/{{ encodeURI queueHost }}/{{ encodeURI queueName }}/{{ state }}?page={{ currentPage }}&amp;pageSize={{ pageSize }}">{{ pageSize }} jobs</a></li>
           <li role="separator" class="divider"></li>
