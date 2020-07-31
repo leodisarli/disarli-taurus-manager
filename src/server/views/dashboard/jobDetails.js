@@ -23,8 +23,7 @@ async function handler(req, res) {
     return res.json(_.omit(job, 'domain', 'queue', '_events', '_eventsCount'));
   }
 
-  const jobState = queue.IS_BEE ? job.status : await job.getState();
-  job.showRetryButton = !queue.IS_BEE || jobState === 'failed';
+  const jobState = await job.getState();
   job.retryButtonText = jobState === 'failed' ? 'Retry' : 'Clone';
 
   let logs = await queue.getJobLogs(job.id);

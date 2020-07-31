@@ -12,19 +12,24 @@ async function handler(req, res) {
   if (!queue) return res.status(404).render('dashboard/templates/queueNotFound', {basePath, queueName, queueHost});
 
   let jobCounts;
-  if (queue.IS_BEE) {
-    jobCounts = await queue.checkHealth();
-    delete jobCounts.newestJob;
-  } else {
-    jobCounts = await queue.getJobCounts();
-  }
+  jobCounts = await queue.getJobCounts();
   const stats = await QueueHelpers.getStats(queue);
+
+  const paused = jobCounts.paused;
+  
+  jobCounts = Object.keys(jobCounts)
+    .filter(key => key != 'paused')
+    .reduce((obj, key) => {
+      obj[key] = jobCounts[key]
+      return obj;
+    }, {});
 
   return res.render('dashboard/templates/queueDetails', {
     basePath,
     queueName,
     queueHost,
     jobCounts,
+    paused,
     stats
   });
 }
