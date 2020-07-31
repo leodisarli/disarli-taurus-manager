@@ -56,6 +56,12 @@ $(document).ready(() => {
     }
   });
 
+  // Set up "select all queues" button handler
+  $('.js-select-all-queues').change(function() {
+    const $queueBulkCheckboxes = $('.js-bulk-queue');
+    $queueBulkCheckboxes.prop('checked', this.checked);
+  });
+
   // Set up "select all jobs" button handler
   $('.js-select-all-jobs').change(function() {
     const $jobBulkCheckboxes = $('.js-bulk-job');
@@ -86,6 +92,53 @@ $(document).ready(() => {
       lastChecked = this;
     });
   })();
+
+  $('.js-queue-action').on('click', function(e) {
+    $(this).prop('disabled', true);
+
+    const $queueActionContainer = $('.js-queue-action-container');
+
+    let data = {
+      action: 'retry',
+      queues: [],
+    };
+
+    $queueActionContainer.each((index, value) => {
+      const isChecked = $(value).find('[name=queueChecked]').is(':checked');
+      const queueName = $(value).find('[name=queueName]').html();
+      const queueHost = $(value).find('[name=queueHost]').html();
+
+      if (isChecked) {
+        data.queues.push({
+          name: queueName,
+          host: queueHost,
+        });
+      }
+    });
+
+    if (data.queues.length === 0) {
+      window.alert('Please, select one or more queues.');
+      return
+    }
+
+    const r = window.confirm(`${capitalize(data.action)} ${data.queues.length} ${data.queues.length > 1 ? 'queues' : 'queue'}?`);
+
+    if (r) {
+      $.ajax({
+        method: 'POST',
+        url: `${basePath}/api/queue/${data.action}`,
+        data: JSON.stringify(data),
+        contentType: 'application/json'
+      }).done(() => {
+        window.location.reload();
+      }).fail((jqXHR) => {
+        window.alert(`Request failed, check console for error.`);
+        console.error(jqXHR.responseText);
+      });
+    } else {
+      $(this).prop('disabled', false);
+    }
+  });
 
   // Set up bulk actions handler
   $('.js-bulk-action').on('click', function(e) {

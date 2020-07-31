@@ -2,7 +2,7 @@
   "name": "taurus-manager",
   "description": "Manage Taurus Queue",
   "main": "index.js",
-  "author": "Leo Di Sarli <leosarli@gmail.com>",
+  "author": "Developer <dev@kiwfy.com>",
   "license": "MIT",
   "dependencies": {
     "bee-queue": "^1.0.0",
@@ -16,7 +16,7 @@
     "handlebars-helpers": "^0.10.0",
     "jsoneditor": "^5.9.6",
     "lodash": "^4.17.19",
-    "nodemon": "^1.18.7",
+    "nodemon": "^2.0.4",
     "tablesort": "^5.0.1"
   },
   "scripts": {
@@ -26,6 +26,6 @@
   "engines": {
     "node": ">=7.6.0"
   },
-  "repository": "https://github.com/leodisarli/disarli-taurus-manager.git",
+  "repository": "https://github.com/kiwfy/taurus-manager.git",
   "version": "1.0.0"
 }
