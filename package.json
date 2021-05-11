@@ -14,7 +14,7 @@
     "handlebars": "^4.3.0",
     "handlebars-helpers": "^0.10.0",
     "jsoneditor": "^5.9.6",
-    "lodash": "^4.17.19",
+    "lodash": "^4.17.21",
     "nodemon": "^2.0.4",
     "tablesort": "^5.0.1",
     "ulid": "^2.3.0"
